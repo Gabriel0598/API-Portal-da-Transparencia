@@ -1,4 +1,4 @@
-package test;
+package servidores;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Properties;
 
-public class reqApiSiafiPg1Ex {
+public class servidoresFuncoesCargos {
     public static void main(String[] args) throws IOException {
         // Properties of connection
         String pathAppProperties = "app.properties";
@@ -16,20 +16,24 @@ public class reqApiSiafiPg1Ex {
         appProps.load(new FileInputStream(pathAppProperties));
 
         // API Access Key
-        String keyAcess = appProps.getProperty("APIKey");
+        String keyAPI = appProps.getProperty("APIKey");
 
-        String URLSiafiPG1 = "http://api.portaldatransparencia.gov.br/api-de-dados/orgaos-siafi?pagina=1";
-        URL url = new URL(URLSiafiPG1);
+        // Connection
+        String URLServidoresCargosFuncoes = "https://api.portaldatransparencia.gov.br/api-de-dados/servidores/funcoes-e-cargos?pagina=1";
+        URL url = new URL(URLServidoresCargosFuncoes);
 
+        // Invoke get method
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("chave-api-dados", keyAcess);
+        connection.setRequestProperty("chave-api-dados", keyAPI);
 
+        // Output buffered
         BufferedReader buffer = new BufferedReader(
-                new InputStreamReader(connection.getInputStream()));
+                new InputStreamReader(connection.getInputStream())
+        );
         String output;
-        while((output = buffer.readLine())!= null){
+        while ((output = buffer.readLine()) != null){
             System.out.println(output);
         }
         connection.disconnect();
